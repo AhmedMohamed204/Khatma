@@ -1023,7 +1023,16 @@ bot.launch();
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
-app.listen(port, () => {
-    console.log(`Started in port number ${port}`);
-});
+//For the deployment
+{
+  const http = require("http");
+  const port = process.env.PORT || 5000;
+  http
+    .createServer(function (req, res) {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("This is my telegram bot :)\n");
+    })
+    .listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+}
