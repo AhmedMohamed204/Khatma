@@ -8,6 +8,25 @@ const fs = require('fs');
 const axios = require('axios')
 const cron = require('node-cron');
 const AdminGroup = "-1001760978311";
+
+
+
+// Schedule a task to run every 2 minutes
+cron.schedule('*/2 * * * *', async () => {
+  try {
+    // Make an HTTP request to the website
+    const response = await axios.get('https://katma.onrender.com');
+
+    // Log the response or handle it as needed
+    console.log('Cron job executed successfully:', response.status, response.statusText);
+  } catch (error) {
+    // Handle any errors that occurred during the HTTP request
+    console.error('Error during cron job:', error.message);
+  }
+});
+
+
+
 const mainText = `
 أهلاً وسهلاً بك في بوت "ختمة"، الذي يأتي لمساعدتك على ختم كتاب الله الكريم بكل يسر وسهولة.
 
