@@ -9,9 +9,18 @@ const axios = require('axios')
 const cron = require('node-cron');
 const AdminGroup = "-1001760978311";
 
+cron.schedule('*/2 * * * *', async () => {
+  try {
+    // Make an HTTP request to the website
+    const response = await axios.get('https://katma.onrender.com');
 
-setInterval(async () => {log("i am here after 5m")},1000*60*5)
-
+    // Log the response or handle it as needed
+    console.log('Cron job executed successfully:', response.status, response.statusText);
+  } catch (error) {
+    // Handle any errors that occurred during the HTTP request
+    console.error('Error during cron job:', error.message);
+  }
+});
 
 
 const mainText = `
