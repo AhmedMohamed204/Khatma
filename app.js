@@ -9,20 +9,6 @@ const axios = require('axios')
 const cron = require('node-cron');
 const AdminGroup = "-1001760978311";
 
-cron.schedule('*/2 * * * *', async () => {
-  try {
-    // Make an HTTP request to the website
-    const response = await axios.get('https://katma.onrender.com');
-
-    // Log the response or handle it as needed
-    console.log('Cron job executed successfully:', response.status, response.statusText);
-  } catch (error) {
-    // Handle any errors that occurred during the HTTP request
-    console.error('Error during cron job:', error.message);
-  }
-});
-
-
 const mainText = `
 أهلاً وسهلاً بك في بوت "ختمة"، الذي يأتي لمساعدتك على ختم كتاب الله الكريم بكل يسر وسهولة.
 
@@ -170,7 +156,7 @@ bot.action("main", ctx => {
 })
 //دالة اعدادات الاشعارات
 bot.action("options", async ctx => {
-    ctx.answerCbQuery()
+    ctx.answerCbQuery().catch(() => { return })
     let userId = ctx.from.id;
     addUser(userId)
     const foundUser = users.find(user => user.user === ctx.from.id);
@@ -202,7 +188,7 @@ bot.action("options", async ctx => {
     }).catch(() => { return })
 })
 bot.action(/(\w+)Notifi/, async ctx => {
-    ctx.answerCbQuery();
+    ctx.answerCbQuery().catch(() => { return });
     let userId = ctx.from.id;
     addUser(userId)
     const wordBeforeNotifi = ctx.callbackQuery.data.match(/(\w+)Notifi/)[1];//الاعداد الذي تم اختياره
@@ -259,10 +245,10 @@ bot.action("plan", async ctx => {
                 ]
             }
         }).catch(() => { return })
-    })
+    }).catch(() => { return })
 })
 bot.action("quraanType", async ctx => {
-    ctx.answerCbQuery()
+    ctx.answerCbQuery().catch(() => { return })
     let userId = ctx.from.id;
     addUser(userId)
     ctx.deleteMessage().then(() => {
@@ -275,10 +261,10 @@ bot.action("quraanType", async ctx => {
                 ]
             }
         }).catch(() => { return })
-    })
+    }).catch(() => { return })
 })
 bot.action(/type+./, async (ctx) => {
-    ctx.answerCbQuery();
+    ctx.answerCbQuery().catch(() => { return });
     let userId = ctx.from.id;
     addUser(userId);
     const callbackValue = ctx.callbackQuery.data;
@@ -330,7 +316,7 @@ bot.action(/type+./, async (ctx) => {
 })
 // عند اخيار الخطة
 bot.action(/.+pages/, async (ctx) => {
-    ctx.answerCbQuery();
+    ctx.answerCbQuery().catch(() => { return });
     addUser(ctx.from.id)
     const foundUser = users.find(user => user.user === ctx.from.id);
     const callbackValue = ctx.callbackQuery.data;
@@ -358,7 +344,7 @@ bot.action(/.+pages/, async (ctx) => {
         start = 1
         xEnd = plan
     }
-    ctx.answerCbQuery(`[تم اختيار الخطة بنجاح]✅\n\nسوف اساعدك في قراءة ${buttonValue} ${pageOrPages} يوميا ان شاء الله \n\nأرسل الأمر tlawa الموجود في القائمة ادناه للمباشرة في وردك لهذا اليوم`, { show_alert: true })
+    ctx.answerCbQuery(`[تم اختيار الخطة بنجاح]✅\n\nسوف اساعدك في قراءة ${buttonValue} ${pageOrPages} يوميا ان شاء الله \n\nأرسل الأمر tlawa الموجود في القائمة ادناه للمباشرة في وردك لهذا اليوم`, { show_alert: true }).catch(() => { return })
     await updateUser(ctx.from.id, { End: xEnd })
     await updateUser(ctx.from.id, { Start: start })
     await updateUser(ctx.from.id, { Plan: Number(buttonValue) })
@@ -372,7 +358,7 @@ bot.action(/.+pages/, async (ctx) => {
                     ]
                 }
             }).catch(() => { return })
-        })
+        }).catch(() => { return })
 });
 // دالة تقريب العدد
 function roundToNearestMultipleOf20(num, plan) {
@@ -405,12 +391,12 @@ bot.hears(/^([1-9]|[١-٩]|[1-9][0-9]|[١-٩][٠-٩]|[1-5][0-9][0-9]|[١-٥][٠-
         } else {
             x = roundToNearestMultipleOf20(number, plan)
         }
-        ctx.reply(`سوف  تبدأ قراءتك من ${number} الى ${x} \nارسل الأمر\n\n/tlawa`)
+        ctx.reply(`سوف  تبدأ قراءتك من ${number} الى ${x} \nارسل الأمر\n\n/tlawa`).catch(() => { return })
         await updateUser(ctx.from.id, { End: x })
         await updateUser(ctx.from.id, { Start: number })
         await updateUser(ctx.from.id, { Option: { ...foundUser.Option, LastExp: number } });
     } else if (number > 580) {
-        ctx.reply(`لقد اقتربت من النهاية، اختم وعُد لنا مرةً أخرى`);
+        ctx.reply(`لقد اقتربت من النهاية، اختم وعُد لنا مرةً أخرى`).catch(() => { return });
     }
 })
 // امر tlawa
@@ -470,17 +456,17 @@ bot.command("tlawa", async ctx => {
 })
 // دالة التفسير
 bot.action("tfseerMood", ctx => {
-    ctx.answerCbQuery();
+    ctx.answerCbQuery().catch(() => { return });
     addUser(ctx.from.id)
-    changeTlawaMood(ctx, 2, "jpg", "المصحف", "default")
+    changeTlawaMood(ctx, 2, "jpg", "المصحف", "default").catch(() => { return })
 })
 bot.action("default", ctx => {
-    ctx.answerCbQuery();
+    ctx.answerCbQuery().catch(() => { return });
     addUser(ctx.from.id)
     let foundUser = users.find(user => user.user === ctx.from.id);
     let pngOrJpgOrGif = foundUser.quraanType.pngOrJpgOrGif // يمثل امتداد الصورة
     let quraanType = foundUser.quraanType.quraanType // يمثل نوع المصحف الذي اختاره المستخدم
-    changeTlawaMood(ctx, quraanType, pngOrJpgOrGif, "التفسير", "tfseerMood")
+    changeTlawaMood(ctx, quraanType, pngOrJpgOrGif, "التفسير", "tfseerMood").catch(() => { return })
 })
 let wrongPages = [3, 4]//صفحات لا تعمل الا على scale 4
 /*
@@ -668,7 +654,7 @@ bot.action("back", async ctx => {
     }).catch(() => { return })
 }).catch(() => { return })
 bot.action("IamDone", async ctx => {
-    ctx.answerCbQuery()
+    ctx.answerCbQuery().catch(() => { return })
     let userId = ctx.from.id;
     // اضافة المستخدم لقاعدة البيانات لتجنب المشاكل
     addUser(userId)
@@ -689,7 +675,7 @@ bot.action("IamDone", async ctx => {
 })
 // الورد التالي
 bot.action("nextwerd", async ctx => {
-    ctx.answerCbQuery("تم الانتقال بنجاح ✅", { show_alert: true })
+    ctx.answerCbQuery("تم الانتقال بنجاح ✅", { show_alert: true }).catch(() => { return })
     addUser(ctx.from.id)
     let foundUser = users.find(user => user.user === ctx.from.id);
     NextWerd(foundUser).then(async () => {
@@ -812,7 +798,12 @@ setInterval(async () => {
                 let FajrTime = user.Notifi.Fajr.boolean
                 if (FajrTime) {
                     let Id = user.user
-                    await bot.telegram.sendMessage(Id, adahnTime("اذان الفجر")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                    try{
+                        await bot.telegram.sendMessage(Id, adahnTime("اذان الفجر")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+
+                    }catch (error){
+                        pass
+                    }
                 }
             })
         }
@@ -882,7 +873,7 @@ async function Alkhf(id) {
 }
 bot.action("nextAlkhf", async ctx => {
     let id = ctx.from.id
-    ctx.answerCbQuery()
+    ctx.answerCbQuery().catch(() => { return })
     let ctxId = ctx.callbackQuery.message.chat.id;
     let nextpage = ctx.callbackQuery.message.reply_markup.inline_keyboard[0][0].text;
     // let backpage = ctx.callbackQuery.message.reply_markup.inline_keyboard[0][1]?.text;
@@ -919,7 +910,7 @@ bot.action("nextAlkhf", async ctx => {
     }
 })
 bot.action("backAlkhf", async ctx => {
-    ctx.answerCbQuery()
+    ctx.answerCbQuery().catch(() => { return })
     let ctxId = ctx.callbackQuery.message.chat.id;
     let id = ctx.from.id
     let nextpage = ctx.callbackQuery.message.reply_markup.inline_keyboard[0][0]?.text;
@@ -997,10 +988,14 @@ bot.command('send', (ctx) => {
     }
 });
 bot.command("all", ctx => {
-    if (ctx.message.reply_to_message && ctx.from.id == 2098036983) {
+    if (ctx.message.reply_to_message && ctx.from.id == 2098036983 || 1168709542) {
         let msgCopied = ctx.message.reply_to_message.message_id;
         users.forEach(async user => {
-            await bot.telegram.copyMessage(user.user, ctx.chat.id, msgCopied).catch(() => { return })
+            try{
+                await bot.telegram.copyMessage(user.user, ctx.chat.id, msgCopied).catch(() => { return })
+            }catch{
+                return
+            }
         })
     }
 })
@@ -1041,7 +1036,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 //For the deployment
 {
   const http = require("http");
-  const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 3030;
   http
     .createServer(function (req, res) {
       res.writeHead(200, { "Content-Type": "text/plain" });
