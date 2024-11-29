@@ -799,7 +799,7 @@ setInterval(async () => {
                 if (FajrTime) {
                     let Id = user.user
                     try{
-                        await bot.telegram.sendMessage(Id, adahnTime("اذان الفجر")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                        await bot.telegram.sendMessage(Id, adahnTime("اذان الفجر")[`${Math.floor(Math.random() * 2)}`]).catch(() => { return })
 
                     }catch (error){
                         pass
@@ -813,7 +813,7 @@ setInterval(async () => {
                 let DhuhrTime = user.Notifi.Dhuhr.boolean
                 if (DhuhrTime) {
                     let Id = user.user
-                    await bot.telegram.sendMessage(Id, adahnTime("اذان الظهر")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                    await bot.telegram.sendMessage(Id, adahnTime("اذان الظهر")[`${Math.floor(Math.random() * 2)}`]).catch(() => { return })
                 }
             })
         }
@@ -823,7 +823,7 @@ setInterval(async () => {
                 let AsrTime = user.Notifi.Asr.boolean
                 if (AsrTime) {
                     let Id = user.user
-                    await bot.telegram.sendMessage(Id, adahnTime("اذان العصر")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                    await bot.telegram.sendMessage(Id, adahnTime("اذان العصر")[`${Math.floor(Math.random() * 2)}`]).catch(() => { return })
                 }
             })
         }
@@ -833,7 +833,7 @@ setInterval(async () => {
                 let MaghribTime = user.Notifi.Maghrib.boolean
                 if (MaghribTime) {
                     let Id = user.user
-                    await bot.telegram.sendMessage(Id, adahnTime("اذان المغرب")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                    await bot.telegram.sendMessage(Id, adahnTime("اذان المغرب")[`${Math.floor(Math.random() * 2)}`]).catch(() => { return })
                 }
             })
         }
@@ -843,7 +843,7 @@ setInterval(async () => {
                 let IshaTime = user.Notifi.Isha.boolean
                 if (IshaTime) {
                     let Id = user.user
-                    await bot.telegram.sendMessage(Id, adahnTime("اذان العشاء")[`${Math.floor(Math.random() * 3)}`]).catch(() => { return })
+                    await bot.telegram.sendMessage(Id, adahnTime("اذان العشاء")[`${Math.floor(Math.random() * 2)}`]).catch(() => { return })
                 }
             })
         }
